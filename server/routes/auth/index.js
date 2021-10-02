@@ -6,7 +6,7 @@ router.post("/register", async (req, res, next) => {
   try {
     // expects {username, email, password} in req.body
     const { username, password, email } = req.body;
-
+    console.log('req.body',req.body)
     if (!username || !password || !email) {
       return res
         .status(400)
