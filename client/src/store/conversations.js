@@ -101,7 +101,7 @@ const reducer = (state = [], action) => {
         action.payload.newMessage
       );
     case UPDATE_CONVERSATION_AS_READ:
-      return markConversationAsRead(state, action.conversationId);
+      return markConversationAsRead(state, action);
     default:
       return state;
   }

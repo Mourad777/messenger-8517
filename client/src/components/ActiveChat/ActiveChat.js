@@ -27,13 +27,13 @@ const ActiveChat = (props) => {
   const conversation = props.conversation || {};
 
   useEffect(() => {
-    
+
     const unreadMessageIds = (conversation.messages || [])
     .filter(m => !m.isRead && m.senderId !== user.id)
     .map(m => m.id);
 
     if (unreadMessageIds.length > 0) {
-      markAsRead(unreadMessageIds, conversation.id)
+      markAsRead(unreadMessageIds, conversation.id, conversation.otherUser.id)
     }
   }, [conversation]);
 
@@ -76,8 +76,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markAsRead: (messageIds, conversationId) => {
-      dispatch(markAsRead(messageIds, conversationId));
+    markAsRead: (messageIds, conversationId,senderId) => {
+      dispatch(markAsRead(messageIds, conversationId,senderId));
     },
   };
 };
