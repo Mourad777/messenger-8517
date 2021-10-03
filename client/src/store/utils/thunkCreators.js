@@ -72,12 +72,8 @@ export const logout = (id) => async (dispatch) => {
 export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
-    const dataWithReversedMessages = data.map(convo=>{
-      return {...convo,messages:convo.messages.reverse()}
-    })
-  
 
-    dispatch(gotConversations(dataWithReversedMessages));
+    dispatch(gotConversations(data));
   } catch (error) {
     console.error(error);
   }
