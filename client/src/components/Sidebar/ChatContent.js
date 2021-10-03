@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Badge, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     marginLeft: 20,
     flexGrow: 1,
   },
@@ -23,8 +24,14 @@ const useStyles = makeStyles((theme) => ({
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation } = props;
+  const { conversation,user:currentUser } = props;
   const { latestMessageText, otherUser } = conversation;
+
+  const numberOfUnreadMessages = conversation.messages.filter(m=>{
+    console.log('m.senderId',m.senderId)
+    console.log('currentUser.id',currentUser.id)
+    return !m.isRead && m.senderId !== currentUser.id
+  }).length
 
   return (
     <Box className={classes.root}>
@@ -36,8 +43,17 @@ const ChatContent = (props) => {
           {latestMessageText}
         </Typography>
       </Box>
+      <Box>
+        <Badge color="primary" badgeContent={numberOfUnreadMessages} />
+      </Box>
     </Box>
   );
 };
 
-export default ChatContent;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(ChatContent);
