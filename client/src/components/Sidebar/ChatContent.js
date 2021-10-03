@@ -26,7 +26,6 @@ const ChatContent = (props) => {
   const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
 
-  console.log('CHAT CONTENT RENDERED')
 
   return (
     <Box className={classes.root}>

@@ -71,7 +71,6 @@ export const addSearchedUsersToStore = (state, users) => {
 };
 
 export const addNewConvoToStore = (state, recipientId, message) => {
-  console.log('message: ',message)
   return state.map((convo) => {
     const convoCopy = {...convo}
     if (convoCopy.otherUser.id === recipientId) {

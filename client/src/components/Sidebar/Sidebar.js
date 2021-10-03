@@ -24,9 +24,6 @@ const Sidebar = (props) => {
   const conversations = props.conversations || [];
   const { handleChange, searchTerm } = props;
 
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SIDE BAR RENDERED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-  console.log('conversations: ',conversations)
-
   return (
     <Box className={classes.root}>
       <CurrentUser />
