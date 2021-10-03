@@ -26,18 +26,18 @@ const ActiveChat = (props) => {
   const { user, markAsRead } = props;
   const conversation = props.conversation || {};
 
-  useEffect(()=>{
-    console.log('conversation',conversation)
-    const unreadMessageIds = (conversation.messages||[]).filter(m=>!m.isRead && m.senderId !== user.id).map(m=>m.id);
-    console.log('unreadMessageIds',unreadMessageIds)
+  useEffect(() => {
+    console.log('conversation', conversation)
+    const unreadMessageIds = (conversation.messages || []).filter(m => !m.isRead && m.senderId !== user.id).map(m => m.id);
+    console.log('unreadMessageIds', unreadMessageIds)
     //1) get all message ids that are not read
     //2)check if any unread messages before making api call
-    if(unreadMessageIds.length > 0) {
-      markAsRead(unreadMessageIds)
+    if (unreadMessageIds.length > 0) {
+      markAsRead(unreadMessageIds, conversation.id)
     }
     //3)send them to api to be marked as read
 
-  },[conversation]);
+  }, [conversation]);
 
   return (
     <Box className={classes.root}>
@@ -78,8 +78,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markAsRead: (messageIds) => {
-      dispatch(markAsRead(messageIds));
+    markAsRead: (messageIds, conversationId) => {
+      dispatch(markAsRead(messageIds, conversationId));
     },
   };
 };

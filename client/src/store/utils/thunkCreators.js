@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  updateConversationAsRead,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -109,10 +110,12 @@ export const postMessage = (body) => (dispatch) => {
   }
 };
 
-export const markAsRead = (body) => async (dispatch) => {
+export const markAsRead = (messageIds,conversationId) => async (dispatch) => {
   try {
-    const { data } = await axios.post("/api/read-message", body);
-
+    const { data } = await axios.post("/api/read-message", messageIds);
+    if(data.allMessagesRead){
+      dispatch(updateConversationAsRead(conversationId));
+    }
     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Mark as read response data',data)
 
   } catch (error) {
