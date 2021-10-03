@@ -27,10 +27,6 @@ const Home = (props) => {
   }, [user.id]);
 
   useEffect(() => {
-    socket.on('new-message', () => {
-      fetchConversations();
-    })
-    
     fetchConversations();
   }, [fetchConversations]);
 
