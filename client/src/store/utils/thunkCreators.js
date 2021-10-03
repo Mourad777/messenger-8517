@@ -116,7 +116,6 @@ export const markAsRead = (messageIds,conversationId) => async (dispatch) => {
     if(data.allMessagesRead){
       dispatch(updateConversationAsRead(conversationId));
     }
-    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Mark as read response data',data)
 
   } catch (error) {
     console.error(error);

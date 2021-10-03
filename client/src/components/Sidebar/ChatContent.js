@@ -28,8 +28,6 @@ const ChatContent = (props) => {
   const { latestMessageText, otherUser } = conversation;
 
   const numberOfUnreadMessages = conversation.messages.filter(m=>{
-    console.log('m.senderId',m.senderId)
-    console.log('currentUser.id',currentUser.id)
     return !m.isRead && m.senderId !== currentUser.id
   }).length
 
