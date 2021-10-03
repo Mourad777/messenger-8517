@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
+import { markAsRead } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
 
 const ActiveChat = (props) => {
   const classes = useStyles();
-  const { user } = props;
+  const { user, markAsRead } = props;
   const conversation = props.conversation || {};
 
   useEffect(()=>{
@@ -32,7 +33,7 @@ const ActiveChat = (props) => {
     //1) get all message ids that are not read
     //2)check if any unread messages before making api call
     if(unreadMessageIds.length > 0) {
-      
+      markAsRead(unreadMessageIds)
     }
     //3)send them to api to be marked as read
 
@@ -75,4 +76,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ActiveChat);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    markAsRead: (messageIds) => {
+      dispatch(markAsRead(messageIds));
+    },
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveChat);

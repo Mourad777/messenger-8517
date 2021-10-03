@@ -109,6 +109,17 @@ export const postMessage = (body) => (dispatch) => {
   }
 };
 
+export const markAsRead = (body) => async (dispatch) => {
+  try {
+    const { data } = await axios.post("/api/read-message", body);
+
+    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Mark as read response data',data)
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/api/users/${searchTerm}`);
