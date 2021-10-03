@@ -6,7 +6,7 @@ import moment from "moment";
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
   const currentUserMessagesRead = messages.filter(m=>m.senderId === userId && m.isRead);
-  const lastCurrentUserReadMessage = currentUserMessagesRead[currentUserMessagesRead.length -1];
+  const lastCurrentUserReadMessage = currentUserMessagesRead[currentUserMessagesRead.length -1]||{};
 
   return (
     <Box>
