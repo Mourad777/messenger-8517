@@ -72,6 +72,7 @@ export const logout = (id) => async (dispatch) => {
 export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
+    console.log('get conversations data: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',data)
     dispatch(gotConversations(data));
   } catch (error) {
     console.error(error);
@@ -100,10 +101,10 @@ export const postMessage = (body) => async (dispatch) => {
     const data = await saveMessage(body);
     if (!body.conversationId) {
       //changed data.message to data.message.text
-      dispatch(addConversation(body.recipientId, data.text));
+      dispatch(addConversation(body.recipientId, data.message));
     } else {
       //changed data.message to data.message.text
-      dispatch(setNewMessage(data.message.text,data.message.senderId));
+      dispatch(setNewMessage(data.message));
     }
 
     sendMessage(data, body);

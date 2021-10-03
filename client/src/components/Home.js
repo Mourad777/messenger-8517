@@ -27,10 +27,8 @@ const Home = (props) => {
   }, [user.id]);
 
   useEffect(() => {
-    console.log('home mounted')
-
-    socket.on('new-message', (data) => {
-      console.log('got a new message')
+    socket.on('new-message', () => {
+      fetchConversations();
     })
     
     fetchConversations();

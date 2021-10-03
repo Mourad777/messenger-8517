@@ -1,0 +1,11 @@
+I fixed the real time update issue on the recipient side but now the sender does not show the updated conversation after sending a message
+however the conversations are updated correctly
+
+there doesnt seem to be an initial state in the reducer
+
+The child components of sidebar were not rerendering, in the reducer I had to make a copy of the convo object before updating the state, because the previous
+props and new props were the same
+
+Used the reverse() function to display the messages in the correct order
+
+Fixed messages not appearing right away by changing data.text to data.message in thunkCreators.js addCoversation function
