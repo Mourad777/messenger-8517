@@ -1,6 +1,0 @@
-The child components of sidebar were not rerendering, in the reducer I had to make a copy of the convo object before updating the state, because the previous
-props and new props were the same
-
-Used the reverse() function to display the messages in the correct order
-
-Fixed messages not appearing right away by changing data.text to data.message in thunkCreators.js addCoversation function
