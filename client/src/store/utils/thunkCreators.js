@@ -111,9 +111,10 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-export const markAsRead = (messageIds, conversationId, senderId) => async (dispatch) => {
+export const markAsRead = (conversationId, senderId) => async (dispatch) => {
   try {
-    const { data } = await axios.put("/api/messages/read", messageIds);
+    console.log('conversationId',conversationId)
+    const { data } = await axios.put("/api/messages/read", {conversationId});
     if (data.allMessagesRead) {
       dispatch(updateConversationAsRead(conversationId));
       socket.emit("read-message", {

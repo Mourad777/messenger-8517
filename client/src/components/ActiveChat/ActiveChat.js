@@ -28,12 +28,11 @@ const ActiveChat = (props) => {
 
   useEffect(() => {
 
-    const unreadMessageIds = (conversation.messages || [])
-    .filter(m => !m.isRead && m.senderId !== user.id)
-    .map(m => m.id);
+    const isUnreadMessage = (conversation.messages || [])
+    .findIndex(m => !m.isRead && m.senderId !== user.id) > -1
 
-    if (unreadMessageIds.length > 0) {
-      markAsRead(unreadMessageIds, conversation.id, conversation.otherUser.id)
+    if (isUnreadMessage) {
+      markAsRead(conversation.id, conversation.otherUser.id)
     }
   }, [conversation]);
 
@@ -76,8 +75,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markAsRead: (messageIds, conversationId,senderId) => {
-      dispatch(markAsRead(messageIds, conversationId,senderId));
+    markAsRead: (conversationId,senderId) => {
+      dispatch(markAsRead(conversationId,senderId));
     },
   };
 };

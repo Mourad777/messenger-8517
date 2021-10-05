@@ -45,20 +45,27 @@ router.post("/", async (req, res, next) => {
 
 router.put("/read", async (req, res, next) => {
   try {
-      const unreadMessageIds = req.body;
-
-      await Message.update({ isRead: true }, { where: { id: unreadMessageIds } });
-
-      const updatedMessages = await Message.findAll({ where: { id: unreadMessageIds } });
-
-      const isUnreadMessage = updatedMessages.findIndex(m => !m.isRead) > -1;
-
-      return res.json({ allMessagesRead: !isUnreadMessage });
+    const { conversationId } = req.body;
+    await Conversation.findOne({
+      where: { id: conversationId },
+      include: [{
+        model: Message,
+      }]
+    })
+      .then(conv => {
+        conv.messages.forEach(message => {
+          if (!message.isRead) {
+            console.log('not read')
+            message.isRead = true;
+            message.save()
+          }
+        })
+      })
+    return res.json({ allMessagesRead: true });
 
   } catch (e) {
 
-      next(error);
-      
+    next(error);
   }
 
 });
