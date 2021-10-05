@@ -95,9 +95,9 @@ const sendMessage = (data, body) => {
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 
-export const postMessage = (body) => (dispatch) => {
+export const postMessage = (body) => async (dispatch) => {
   try {
-    const data = saveMessage(body);
+    const data = await saveMessage(body);
 
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
@@ -113,7 +113,7 @@ export const postMessage = (body) => (dispatch) => {
 
 export const markAsRead = (messageIds, conversationId, senderId) => async (dispatch) => {
   try {
-    const { data } = await axios.post("/api/read-message", messageIds);
+    const { data } = await axios.put("/api/messages/read", messageIds);
     if (data.allMessagesRead) {
       dispatch(updateConversationAsRead(conversationId));
       socket.emit("read-message", {
