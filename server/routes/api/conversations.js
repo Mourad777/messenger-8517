@@ -72,11 +72,11 @@ router.get("/", async (req, res, next) => {
       conversations[i] = convoJSON;
     }
 
-    const orderedConversations = conversations.map(convo=>{
-      return {...convo,messages:convo.messages.sort((a,b)=>{
-        return a.id - b.id
-      })}
-    });
+    const orderedConversations = conversations.map(convo=>({
+      ...convo,messages:convo.messages
+        .sort((a,b)=> a.createdAt.getTime() - b.createdAt.getTime()
+      )}
+    ));
     
     res.json(orderedConversations);
   } catch (error) {
