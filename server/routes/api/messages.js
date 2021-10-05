@@ -44,23 +44,35 @@ router.post("/", async (req, res, next) => {
 });
 
 router.put("/read", async (req, res, next) => {
+
+  const userId = req.user.id;
+
   try {
     const { conversationId } = req.body;
-    await Conversation.findOne({
-      where: { id: conversationId },
+
+    const populatedConvo = await Conversation.findOne({
+      where: {
+        id: conversationId,
+      },
       include: [{
         model: Message,
       }]
+    });
+
+    const user1Id = populatedConvo.user1Id;
+    const user2Id = populatedConvo.user2Id;
+
+    if ( !(user1Id === userId || user2Id === userId) ) {
+      return res.sendStatus(401);
+    }
+
+    populatedConvo.messages.forEach(message => {
+      if (!message.isRead) {
+        message.isRead = true;
+        message.save()
+      }
     })
-      .then(conv => {
-        conv.messages.forEach(message => {
-          if (!message.isRead) {
-            console.log('not read')
-            message.isRead = true;
-            message.save()
-          }
-        })
-      })
+
     return res.json({ allMessagesRead: true });
 
   } catch (e) {
