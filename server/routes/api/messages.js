@@ -73,7 +73,7 @@ router.put("/read", async (req, res, next) => {
       }
     })
 
-    return res.json({ allMessagesRead: true });
+    return res.json({ allMessagesRead: true }).sendStatus(204);
 
   } catch (e) {
 
@@ -81,8 +81,5 @@ router.put("/read", async (req, res, next) => {
   }
 
 });
-
-module.exports = router;
-
 
 module.exports = router;
