@@ -26,22 +26,22 @@ const useStyles = makeStyles(() => ({
     borderRadius: "10px 10px 0 10px"
   },
   profilePic: {
-    width:15,
-    height:15,
+    width: 15,
+    height: 15,
   }
 }));
 
 const SenderBubble = (props) => {
   const classes = useStyles();
   const { time, text, isLastReadMessage, otherUser } = props;
-  const {username, photoUrl} = otherUser;
+  const { username, photoUrl } = otherUser;
   return (
     <Box className={classes.root}>
       <Typography className={classes.date}>{time}</Typography>
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
-      {isLastReadMessage && <Avatar alt={username} src={photoUrl} className={classes.profilePic}></Avatar>}
+      {isLastReadMessage && <Avatar alt={username} src={photoUrl} className={classes.profilePic} />}
     </Box>
   );
 };
