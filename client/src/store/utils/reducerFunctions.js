@@ -16,7 +16,7 @@ export const addConversationsToStore = (payload) => {
 
   });
 
-  return conversationsWithLatestMessage
+  return conversationsWithLatestMessage;
 };
 
 export const addMessageToStore = (state, payload) => {

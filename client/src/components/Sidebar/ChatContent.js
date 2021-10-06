@@ -22,7 +22,13 @@ const useStyles = makeStyles((theme) => ({
   },
   notificationIcon: {
     marginRight: 20
-  }
+  },
+  boldTextPreview: {
+    fontWeight: 'bold'
+  },
+  normalWeightTextPreview: {
+    fontWeight: 'normal'
+  },
 }));
 
 const ChatContent = (props) => {
@@ -33,7 +39,7 @@ const ChatContent = (props) => {
 
   const numberOfUnreadMessages = conversation.messages.filter(m => {
     return !m.isRead && m.senderId !== currentUser.id
-  }).length
+  }).length;
 
   return (
     <Box className={classes.root}>
@@ -41,7 +47,11 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography style={{ fontWeight: conversation.isUnreadMessage ? 'bold' : 'normal' }} className={classes.previewText}>
+        <Typography
+          className={[
+            classes.previewText,
+            conversation.isUnreadMessage ? classes.boldTextPreview : classes.normalWeightTextPreview
+          ].join(' ')}>
           {latestMessageText}
         </Typography>
       </Box>
