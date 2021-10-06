@@ -98,11 +98,9 @@ const sendMessage = (data, body) => {
 export const postMessage = (body, userId) => async (dispatch) => {
   try {
     const data = await saveMessage(body);
-    console.log('response save message', data)
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
-      console.log('data.sender.id', data.senderId)
       dispatch(setNewMessage(data.message, data.sender, userId));
     }
 

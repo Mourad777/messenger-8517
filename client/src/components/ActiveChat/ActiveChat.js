@@ -28,11 +28,6 @@ const ActiveChat = (props) => {
 
   useEffect(() => {
 
-    // const isUnreadMessage = (conversation.messages || [])
-    //   .findIndex(m => !m.isRead && m.senderId !== user.id) > -1
-    console.log('conversation.otherUser.userName', (conversation))
-    console.log('activeConversation',activeConversation)
-
     if (conversation.isUnreadMessage && (activeConversation === conversation.otherUser.username)) {
       markAsRead(conversation.id, conversation.otherUser.id, user.id)
     }
