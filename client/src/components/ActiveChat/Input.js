@@ -35,7 +35,7 @@ const Input = (props) => {
       conversationId,
       sender: conversationId ? null : user
     };
-    await postMessage(reqBody);
+    await postMessage(reqBody, user.id);
     setText("");
   };
 
@@ -57,8 +57,8 @@ const Input = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    postMessage: (message) => {
-      dispatch(postMessage(message));
+    postMessage: (message, userId) => {
+      dispatch(postMessage(message, userId));
     },
   };
 };

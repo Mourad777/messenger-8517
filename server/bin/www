@@ -50,6 +50,7 @@ io.on("connection", (socket) => {
   socket.on("read-message", (data) => {
     socket.broadcast.emit("read-message", {
       conversationId: data.conversationId,
+      userId:data.senderId,
     });
   });
 

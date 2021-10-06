@@ -70,10 +70,10 @@ export const logout = (id) => async (dispatch) => {
 
 // CONVERSATIONS THUNK CREATORS
 
-export const fetchConversations = () => async (dispatch) => {
+export const fetchConversations = (userId) => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
-    dispatch(gotConversations(data));
+    dispatch(gotConversations(data, userId));
   } catch (error) {
     console.error(error);
   }
@@ -95,14 +95,15 @@ const sendMessage = (data, body) => {
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 
-export const postMessage = (body) => async (dispatch) => {
+export const postMessage = (body, userId) => async (dispatch) => {
   try {
     const data = await saveMessage(body);
-
+    console.log('response save message', data)
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
-      dispatch(setNewMessage(data.message));
+      console.log('data.sender.id', data.senderId)
+      dispatch(setNewMessage(data.message, data.sender, userId));
     }
 
     sendMessage(data, body);
@@ -111,11 +112,11 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
-export const markAsRead = (conversationId, senderId) => async (dispatch) => {
+export const markAsRead = (conversationId, senderId, userId) => async (dispatch) => {
   try {
-    const { data } = await axios.put("/api/messages/read", {conversationId});
+    const { data } = await axios.put("/api/messages/read", { conversationId });
     if (data.allMessagesRead) {
-      dispatch(updateConversationAsRead(conversationId));
+      dispatch(updateConversationAsRead(conversationId, userId));
       socket.emit("read-message", {
         conversationId,
         senderId,

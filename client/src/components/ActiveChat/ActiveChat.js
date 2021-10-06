@@ -23,18 +23,20 @@ const useStyles = makeStyles(() => ({
 
 const ActiveChat = (props) => {
   const classes = useStyles();
-  const { user, markAsRead } = props;
+  const { user, markAsRead, activeConversation } = props;
   const conversation = props.conversation || {};
 
   useEffect(() => {
 
-    const isUnreadMessage = (conversation.messages || [])
-    .findIndex(m => !m.isRead && m.senderId !== user.id) > -1
+    // const isUnreadMessage = (conversation.messages || [])
+    //   .findIndex(m => !m.isRead && m.senderId !== user.id) > -1
+    console.log('conversation.otherUser.userName', (conversation))
+    console.log('activeConversation',activeConversation)
 
-    if (isUnreadMessage) {
-      markAsRead(conversation.id, conversation.otherUser.id)
+    if (conversation.isUnreadMessage && (activeConversation === conversation.otherUser.username)) {
+      markAsRead(conversation.id, conversation.otherUser.id, user.id)
     }
-  }, [conversation]);
+  }, [conversation, activeConversation, markAsRead]);
 
   return (
     <Box className={classes.root}>
@@ -49,6 +51,7 @@ const ActiveChat = (props) => {
               messages={conversation.messages}
               otherUser={conversation.otherUser}
               userId={user.id}
+              latestCurrentUserReadMessage={conversation.latestCurrentUserReadMessage}
             />
             <Input
               otherUser={conversation.otherUser}
@@ -65,6 +68,7 @@ const ActiveChat = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    activeConversation: state.activeConversation,
     conversation:
       state.conversations &&
       state.conversations.find(
@@ -75,8 +79,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    markAsRead: (conversationId,senderId) => {
-      dispatch(markAsRead(conversationId,senderId));
+    markAsRead: (conversationId, senderId, userId) => {
+      dispatch(markAsRead(conversationId, senderId, userId));
     },
   };
 };

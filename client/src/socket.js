@@ -22,8 +22,9 @@ socket.on("connect", () => {
   socket.on("new-message", (data) => {
     store.dispatch(setNewMessage(data.message, data.sender));
   });
+
   socket.on("read-message", (data) => {
-    store.dispatch(updateConversationAsRead(data.conversationId));
+    store.dispatch(updateConversationAsRead(data.conversationId, data.userId));
   });
 });
 

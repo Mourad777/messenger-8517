@@ -5,6 +5,7 @@ import {
   removeOfflineUserFromStore,
   addMessageToStore,
   markConversationAsRead,
+  addConversationsToStore,
 } from "./utils/reducerFunctions";
 
 // ACTIONS
@@ -20,24 +21,24 @@ const UPDATE_CONVERSATION_AS_READ = "UPDATE_CONVERSATION_AS_READ";
 
 // ACTION CREATORS
 
-export const gotConversations = (conversations) => {
+export const gotConversations = (conversations, userId) => {
   return {
     type: GET_CONVERSATIONS,
-    conversations,
+    payload: { conversations, userId },
   };
 };
 
-export const updateConversationAsRead = (conversationId) => {
+export const updateConversationAsRead = (conversationId, userId) => {
   return {
     type: UPDATE_CONVERSATION_AS_READ,
-    conversationId,
+    payload: { conversationId, userId },
   };
 };
 
-export const setNewMessage = (message, sender) => {
+export const setNewMessage = (message, sender, userId) => {
   return {
     type: SET_MESSAGE,
-    payload: { message, sender: sender || null },
+    payload: { message, sender: sender || null, userId },
   };
 };
 
@@ -81,7 +82,7 @@ export const addConversation = (recipientId, newMessage) => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_CONVERSATIONS:
-      return action.conversations;
+      return addConversationsToStore(action.payload);
     case SET_MESSAGE:
       return addMessageToStore(state, action.payload);
     case ADD_ONLINE_USER: {
@@ -101,7 +102,7 @@ const reducer = (state = [], action) => {
         action.payload.newMessage
       );
     case UPDATE_CONVERSATION_AS_READ:
-      return markConversationAsRead(state, action);
+      return markConversationAsRead(state, action.payload);
     default:
       return state;
   }
