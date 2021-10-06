@@ -26,8 +26,8 @@ const useStyles = makeStyles(() => ({
     borderRadius: "10px 10px 0 10px"
   },
   profilePic: {
-    width: 15,
-    height: 15,
+    width: 20,
+    height: 20,
   }
 }));
 
