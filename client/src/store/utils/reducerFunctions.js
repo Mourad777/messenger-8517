@@ -1,6 +1,6 @@
 const getLatestCurrUserReadMessage = (messages, userId) => {
   const readMessagesFromCurrentUser = messages.filter(m => {
-    return m.senderId === userId && m.isRead
+    return message.senderId === userId && message.isRead
   });
   const lastCurrentUserReadMessage = readMessagesFromCurrentUser[readMessagesFromCurrentUser.length - 1] || {};
 
@@ -14,7 +14,7 @@ export const addConversationsToStore = (payload) => {
   const conversationsWithLatestMessage = conversations.map(convo => {
     const latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convo.messages, userId);
     const isUnreadMessage = (convo.messages || [])
-      .findIndex(m => !m.isRead && (m.senderId !== userId)) > -1;
+      .findIndex(message => !message.isRead && (message.senderId !== userId)) > -1;
 
     return {
       ...convo,
@@ -53,7 +53,7 @@ export const addMessageToStore = (state, payload) => {
 
       const isUnreadMessage =
         convoCopy.messages
-          .findIndex(m => !m.isRead && m.senderId !== userId) > -1;
+          .findIndex(message => !message.isRead && message.senderId !== userId) > -1;
 
       convoCopy.isUnreadMessage = isUnreadMessage;
       return convoCopy;
@@ -68,10 +68,9 @@ export const markConversationAsRead = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === conversationId) {
       const convoCopy = { ...convo };
-      const updatedMessages = convoCopy.messages.map(m => {
-        return { ...m, isRead: true }
+      const updatedMessages = convoCopy.messages.map(message => {
+        return { ...message, isRead: true }
       });
-      console.log('markConversationAsRead ^^^^^^^%%%%%%%%%%%^^^^^^^^^^^^userId',userId)
       const lastCurrentUserReadMessage = getLatestCurrUserReadMessage(updatedMessages, userId);
       convoCopy.latestCurrentUserReadMessage = lastCurrentUserReadMessage;
       convoCopy.isUnreadMessage = false;
@@ -127,14 +126,12 @@ export const addSearchedUsersToStore = (state, users) => {
 };
 
 export const addNewConvoToStore = (state, recipientId, message) => {
-  console.log('new convo add to store fired!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
   return state.map((convo) => {
     if (convo.otherUser.id === recipientId) {
       const convoCopy = { ...convo };
       convoCopy.id = message.conversationId;
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
-      // convoCopy.latestCurrentUserReadMessage = null;
       convoCopy.isUnreadMessage = false;
       return convoCopy;
     } else {
