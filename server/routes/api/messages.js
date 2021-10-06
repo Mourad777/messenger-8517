@@ -63,7 +63,7 @@ router.put("/read", async (req, res, next) => {
     const user2Id = populatedConvo.user2Id;
 
     if ( !(user1Id === userId || user2Id === userId) ) {
-      return res.sendStatus(401);
+      return res.sendStatus(403);
     }
 
     populatedConvo.messages.forEach(message => {
