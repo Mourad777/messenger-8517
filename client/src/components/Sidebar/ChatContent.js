@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginLeft: 20,
     flexGrow: 1,
-    alignItems:'center',
+    alignItems: 'center',
   },
   username: {
     fontWeight: "bold",
@@ -20,18 +20,18 @@ const useStyles = makeStyles((theme) => ({
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
-  notificationIcon:{
-    marginRight:20
+  notificationIcon: {
+    marginRight: 20
   }
 }));
 
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation,user:currentUser } = props;
+  const { conversation, user: currentUser } = props;
   const { latestMessageText, otherUser } = conversation;
 
-  const numberOfUnreadMessages = conversation.messages.filter(m=>{
+  const numberOfUnreadMessages = conversation.messages.filter(m => {
     return !m.isRead && m.senderId !== currentUser.id
   }).length
 
@@ -41,7 +41,7 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography style={{ fontWeight: conversation.isUnreadMessage ? 'bold' : 'normal' }} className={classes.previewText}>
           {latestMessageText}
         </Typography>
       </Box>
