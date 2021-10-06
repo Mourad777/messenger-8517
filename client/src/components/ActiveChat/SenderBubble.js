@@ -6,7 +6,7 @@ const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   date: {
     fontSize: 11,

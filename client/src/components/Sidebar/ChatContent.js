@@ -6,9 +6,10 @@ import { connect } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginLeft: 20,
     flexGrow: 1,
+    alignItems:'center',
   },
   username: {
     fontWeight: "bold",
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
+  notificationIcon:{
+    marginRight:20
+  }
 }));
 
 const ChatContent = (props) => {
@@ -42,7 +46,7 @@ const ChatContent = (props) => {
         </Typography>
       </Box>
       <Box>
-        <Badge color="primary" badgeContent={numberOfUnreadMessages} />
+        <Badge className={classes.notificationIcon} color="primary" badgeContent={numberOfUnreadMessages} />
       </Box>
     </Box>
   );
