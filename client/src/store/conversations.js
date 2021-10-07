@@ -24,14 +24,14 @@ const UPDATE_CONVERSATION_AS_READ = "UPDATE_CONVERSATION_AS_READ";
 export const gotConversations = (conversations, userId) => {
   return {
     type: GET_CONVERSATIONS,
-    payload: { conversations, userId },
+    conversations,
   };
 };
 
-export const updateConversationAsRead = (conversationId, userId) => {
+export const updateConversationAsRead = (conversationId, userId, latestReadMessageId) => {
   return {
     type: UPDATE_CONVERSATION_AS_READ,
-    payload: { conversationId, userId },
+    payload: { conversationId, userId, latestReadMessageId },
   };
 };
 
@@ -82,7 +82,7 @@ export const addConversation = (recipientId, newMessage) => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_CONVERSATIONS:
-      return addConversationsToStore(action.payload);
+      return action.conversations;
     case SET_MESSAGE:
       return addMessageToStore(state, action.payload);
     case ADD_ONLINE_USER: {

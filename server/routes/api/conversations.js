@@ -76,6 +76,17 @@ router.get("/", async (req, res, next) => {
       }).length;
 
       convoJSON.unreadMessagesCount = numberOfUnreadMessages;
+
+      const getLatestCurrUserReadMessage = (messages, userId) => {
+        const readMessagesFromCurrentUser = messages.filter(message => {
+          return message.senderId === userId && message.isRead
+        });
+        const lastCurrentUserReadMessage = readMessagesFromCurrentUser[readMessagesFromCurrentUser.length - 1] || {};
+
+        return lastCurrentUserReadMessage
+      }
+
+      convoJSON.latestReadMessageId = getLatestCurrUserReadMessage(convoJSON.messages, userId).id
     }
 
     res.json(conversations);

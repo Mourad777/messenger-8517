@@ -1,20 +1,3 @@
-import { getLatestCurrUserReadMessage } from "./helperFunctions";
-
-export const addConversationsToStore = (payload) => {
-  const { userId, conversations } = payload
-
-  const conversationsWithLatestMessage = conversations.map(convo => {
-    const latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convo.messages, userId);
-    return {
-      ...convo,
-      latestCurrentUserReadMessage,
-    }
-
-  });
-
-  return conversationsWithLatestMessage;
-};
-
 export const addMessageToStore = (state, payload) => {
   const { message, sender, userId } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -27,19 +10,15 @@ export const addMessageToStore = (state, payload) => {
     };
     newConvo.latestMessageText = message.text;
     newConvo.unreadMessagesCount = 1;
-
-    newConvo.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(newConvo.messages, userId);
     return [newConvo, ...state];
   }
 
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
-      const convoCopy = { ...convo };
-      convoCopy.messages.push(message);
-      convoCopy.latestMessageText = message.text;
-      convoCopy.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convoCopy.messages, userId);
-      convoCopy.unreadMessagesCount = message.senderId !== userId ? convo.unreadMessagesCount + 1 : convo.unreadMessagesCount;
-      return convoCopy;
+      convo.messages.push(message);
+      convo.latestMessageText = message.text;
+      convo.unreadMessagesCount = message.senderId !== userId ? convo.unreadMessagesCount + 1 : convo.unreadMessagesCount;
+      return convo;
     } else {
       return convo;
     }
@@ -47,15 +26,14 @@ export const addMessageToStore = (state, payload) => {
 };
 
 export const markConversationAsRead = (state, payload) => {
-  const { conversationId, userId } = payload;
+  const { conversationId, latestReadMessageId } = payload;
   return state.map((convo) => {
     if (convo.id === conversationId) {
       const convoCopy = { ...convo };
       const updatedMessages = convoCopy.messages.map(message => {
         return { ...message, isRead: true }
       });
-      const lastCurrentUserReadMessage = getLatestCurrUserReadMessage(updatedMessages, userId);
-      convoCopy.latestCurrentUserReadMessage = lastCurrentUserReadMessage;
+      convoCopy.latestReadMessageId = latestReadMessageId;
       convoCopy.unreadMessagesCount = 0;
       return { ...convoCopy, messages: updatedMessages };
     } else {
@@ -111,11 +89,10 @@ export const addSearchedUsersToStore = (state, users) => {
 export const addNewConvoToStore = (state, recipientId, message) => {
   return state.map((convo) => {
     if (convo.otherUser.id === recipientId) {
-      const convoCopy = { ...convo };
-      convoCopy.id = message.conversationId;
-      convoCopy.messages.push(message);
-      convoCopy.latestMessageText = message.text;
-      return convoCopy;
+      convo.id = message.conversationId;
+      convo.messages.push(message);
+      convo.latestMessageText = message.text;
+      return convo;
     } else {
       return convo;
     }

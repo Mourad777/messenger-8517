@@ -5,7 +5,7 @@ import moment from "moment";
 
 const Messages = (props) => {
   
-  const { messages, otherUser, userId, latestCurrentUserReadMessage } = props;
+  const { messages, otherUser, userId, latestReadMessageId } = props;
 
   return (
     <Box>
@@ -17,7 +17,7 @@ const Messages = (props) => {
             key={message.id}
             text={message.text}
             time={time}
-            isLastReadMessage={!!latestCurrentUserReadMessage && latestCurrentUserReadMessage.id === message.id}
+            isLastReadMessage={latestReadMessageId === message.id}
             otherUser={otherUser} />
         ) : (
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />

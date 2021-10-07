@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("read-message", {
       conversationId: data.conversationId,
       userId:data.senderId,
+      latestReadMessageIdRecipient:data.latestReadMessageIdRecipient,
     });
   });
 
