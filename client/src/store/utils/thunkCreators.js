@@ -70,10 +70,10 @@ export const logout = (id) => async (dispatch) => {
 
 // CONVERSATIONS THUNK CREATORS
 
-export const fetchConversations = (userId) => async (dispatch) => {
+export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
-    dispatch(gotConversations(data, userId));
+    dispatch(gotConversations(data));
   } catch (error) {
     console.error(error);
   }
@@ -113,11 +113,11 @@ export const postMessage = (body) => (dispatch) => {
 export const markAsRead = (conversationId, senderId, userId) => async (dispatch) => {
   try {
     const { data } = await axios.put("/api/messages/read", { conversationId });
-    dispatch(updateConversationAsRead(conversationId, userId));
+    dispatch(updateConversationAsRead(conversationId));
     socket.emit("read-message", {
       conversationId,
       senderId,
-      latestReadMessageIdRecipient:data.latestReadMessageIdRecipient,
+      latestReadMessageIdRecipient: data.latestReadMessageIdRecipient,
     });
 
   } catch (error) {

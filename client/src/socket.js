@@ -24,8 +24,7 @@ socket.on("connect", () => {
   });
 
   socket.on("read-message", (data) => {
-    console.log('socket on read-message id',data.latestReadMessageIdRecipient)
-    store.dispatch(updateConversationAsRead(data.conversationId, data.userId, data.latestReadMessageIdRecipient));
+    store.dispatch(updateConversationAsRead(data.conversationId, data.latestReadMessageIdRecipient));
   });
 });
 

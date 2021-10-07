@@ -5,7 +5,6 @@ import {
   removeOfflineUserFromStore,
   addMessageToStore,
   markConversationAsRead,
-  addConversationsToStore,
 } from "./utils/reducerFunctions";
 
 // ACTIONS
@@ -21,17 +20,17 @@ const UPDATE_CONVERSATION_AS_READ = "UPDATE_CONVERSATION_AS_READ";
 
 // ACTION CREATORS
 
-export const gotConversations = (conversations, userId) => {
+export const gotConversations = (conversations) => {
   return {
     type: GET_CONVERSATIONS,
     conversations,
   };
 };
 
-export const updateConversationAsRead = (conversationId, userId, latestReadMessageId) => {
+export const updateConversationAsRead = (conversationId, latestReadMessageId) => {
   return {
     type: UPDATE_CONVERSATION_AS_READ,
-    payload: { conversationId, userId, latestReadMessageId },
+    payload: { conversationId, latestReadMessageId },
   };
 };
 
