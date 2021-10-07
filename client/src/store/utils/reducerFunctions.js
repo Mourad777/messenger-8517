@@ -5,13 +5,9 @@ export const addConversationsToStore = (payload) => {
 
   const conversationsWithLatestMessage = conversations.map(convo => {
     const latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convo.messages, userId);
-    const isUnreadMessage = (convo.messages || [])
-      .findIndex(message => !message.isRead && (message.senderId !== userId)) > -1;
-
     return {
       ...convo,
       latestCurrentUserReadMessage,
-      isUnreadMessage,
     }
 
   });
@@ -33,7 +29,6 @@ export const addMessageToStore = (state, payload) => {
     newConvo.unreadMessagesCount = 1;
 
     newConvo.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(newConvo.messages, userId);
-    newConvo.isUnreadMessage = true;
     return [newConvo, ...state];
   }
 
@@ -43,12 +38,6 @@ export const addMessageToStore = (state, payload) => {
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
       convoCopy.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convoCopy.messages, userId);
-
-      const isUnreadMessage =
-        convoCopy.messages
-          .findIndex(message => !message.isRead && message.senderId !== userId) > -1;
-
-      convoCopy.isUnreadMessage = isUnreadMessage;
       convoCopy.unreadMessagesCount = message.senderId !== userId ? convo.unreadMessagesCount + 1 : convo.unreadMessagesCount;
       return convoCopy;
     } else {
@@ -67,7 +56,6 @@ export const markConversationAsRead = (state, payload) => {
       });
       const lastCurrentUserReadMessage = getLatestCurrUserReadMessage(updatedMessages, userId);
       convoCopy.latestCurrentUserReadMessage = lastCurrentUserReadMessage;
-      convoCopy.isUnreadMessage = false;
       convoCopy.unreadMessagesCount = 0;
       return { ...convoCopy, messages: updatedMessages };
     } else {
@@ -127,7 +115,6 @@ export const addNewConvoToStore = (state, recipientId, message) => {
       convoCopy.id = message.conversationId;
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
-      convoCopy.isUnreadMessage = false;
       return convoCopy;
     } else {
       return convo;

@@ -28,7 +28,7 @@ const ActiveChat = (props) => {
 
   useEffect(() => {
 
-    if (conversation.isUnreadMessage && (activeConversation === conversation.otherUser.username)) {
+    if ((conversation.unreadMessagesCount > 0) && (activeConversation === conversation.otherUser.username)) {
       markAsRead(conversation.id, conversation.otherUser.id, user.id)
     }
   }, [conversation, activeConversation, markAsRead]);
