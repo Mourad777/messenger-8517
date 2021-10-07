@@ -30,6 +30,7 @@ export const addMessageToStore = (state, payload) => {
       messages: [message],
     };
     newConvo.latestMessageText = message.text;
+    newConvo.unreadMessagesCount = 1;
 
     newConvo.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(newConvo.messages, userId);
     newConvo.isUnreadMessage = true;
@@ -38,17 +39,18 @@ export const addMessageToStore = (state, payload) => {
 
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
-      
-      convo.messages.push(message);
-      convo.latestMessageText = message.text;
-      convo.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convo.messages, userId);
+      const convoCopy = { ...convo };
+      convoCopy.messages.push(message);
+      convoCopy.latestMessageText = message.text;
+      convoCopy.latestCurrentUserReadMessage = getLatestCurrUserReadMessage(convoCopy.messages, userId);
 
       const isUnreadMessage =
-        convo.messages
+        convoCopy.messages
           .findIndex(message => !message.isRead && message.senderId !== userId) > -1;
 
-      convo.isUnreadMessage = isUnreadMessage;
-      return convo;
+      convoCopy.isUnreadMessage = isUnreadMessage;
+      convoCopy.unreadMessagesCount = message.senderId !== userId ? convo.unreadMessagesCount + 1 : convo.unreadMessagesCount;
+      return convoCopy;
     } else {
       return convo;
     }
@@ -66,6 +68,7 @@ export const markConversationAsRead = (state, payload) => {
       const lastCurrentUserReadMessage = getLatestCurrUserReadMessage(updatedMessages, userId);
       convoCopy.latestCurrentUserReadMessage = lastCurrentUserReadMessage;
       convoCopy.isUnreadMessage = false;
+      convoCopy.unreadMessagesCount = 0;
       return { ...convoCopy, messages: updatedMessages };
     } else {
       return convo;
@@ -120,12 +123,12 @@ export const addSearchedUsersToStore = (state, users) => {
 export const addNewConvoToStore = (state, recipientId, message) => {
   return state.map((convo) => {
     if (convo.otherUser.id === recipientId) {
-      
-      convo.id = message.conversationId;
-      convo.messages.push(message);
-      convo.latestMessageText = message.text;
-      convo.isUnreadMessage = false;
-      return convo;
+      const convoCopy = { ...convo };
+      convoCopy.id = message.conversationId;
+      convoCopy.messages.push(message);
+      convoCopy.latestMessageText = message.text;
+      convoCopy.isUnreadMessage = false;
+      return convoCopy;
     } else {
       return convo;
     }

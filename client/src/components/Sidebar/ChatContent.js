@@ -1,7 +1,6 @@
 import React from "react";
 import { Badge, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,12 +33,8 @@ const useStyles = makeStyles((theme) => ({
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation, user: currentUser } = props;
+  const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
-
-  const numberOfUnreadMessages = conversation.messages.filter(m => {
-    return !m.isRead && m.senderId !== currentUser.id
-  }).length;
 
   return (
     <Box className={classes.root}>
@@ -56,16 +51,10 @@ const ChatContent = (props) => {
         </Typography>
       </Box>
       <Box>
-        <Badge className={classes.notificationIcon} color="primary" badgeContent={numberOfUnreadMessages} />
+        <Badge className={classes.notificationIcon} color="primary" badgeContent={conversation.unreadMessagesCount} />
       </Box>
     </Box>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  };
-};
-
-export default connect(mapStateToProps)(ChatContent);
+export default ChatContent
