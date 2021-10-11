@@ -23,7 +23,6 @@ const Chat = (props) => {
   const classes = useStyles();
   const { conversation } = props;
   const { otherUser } = conversation;
-
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
   };

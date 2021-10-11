@@ -89,7 +89,13 @@ router.get("/", async (req, res, next) => {
       convoJSON.latestReadMessageId = getLatestCurrUserReadMessage(convoJSON.messages, userId).id
     }
 
-    res.json(conversations);
+    const orderedConversations = conversations.map(convo=>({
+      ...convo,messages:convo.messages
+        .sort((a,b)=> a.createdAt.getTime() - b.createdAt.getTime()
+      )}
+    ));
+    
+    res.json(orderedConversations);
   } catch (error) {
     next(error);
   }
