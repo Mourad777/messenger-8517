@@ -5,10 +5,13 @@ const Message = require("./message");
 // associations
 
 User.hasMany(Conversation);
-Conversation.belongsTo(User, { as: "user1" });
-Conversation.belongsTo(User, { as: "user2" });
-Message.belongsTo(Conversation);
+Conversation.belongsToMany(User);
+
 Conversation.hasMany(Message);
+Message.belongsTo(Conversation);
+
+//group conversations have 1 admin that can add/remove other users from the convo
+Conversation.belongsTo(User, { foreignKey: 'userId', as: 'admin' });
 
 module.exports = {
   User,
